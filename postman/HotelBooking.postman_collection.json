@@ -1245,6 +1245,332 @@
           }
         }
       ]
+    },
+    {
+      "name": "4. Dịch vụ",
+      "item": [
+        {
+          "name": "Danh mục dịch vụ (lễ tân)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test(\"Có ít nhất 6 dịch vụ mẫu\", () => { const body = pm.response.json(); pm.expect(body.length >= 6, \"body.length >= 6\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/amenities"
+          }
+        },
+        {
+          "name": "Thêm dịch vụ (admin)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('amenityName', 'Dịch vụ test ' + Date.now());"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                  "pm.test(\"Đúng đơn giá\", () => { const body = pm.response.json(); pm.expect(body.unitPrice === 120000, \"body.unitPrice === 120000\").to.be.true; });",
+                  "if (pm.response.code < 300) { const body = pm.response.json(); pm.collectionVariables.set('amenityId', body.id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/amenities",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"{{amenityName}}\", \"unitPrice\": 120000, \"unit\": \"lượt\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Lễ tân thêm dịch vụ → 403",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 403', () => pm.response.to.have.status(403));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/amenities",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Không được\",\n  \"unitPrice\": 1,\n  \"unit\": \"lượt\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Trùng tên dịch vụ → 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409', () => pm.response.to.have.status(409));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/amenities",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"{{amenityName}}\", \"unitPrice\": 1000, \"unit\": \"lượt\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Đơn giá không hợp lệ → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/amenities",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sai giá\",\n  \"unitPrice\": -5,\n  \"unit\": \"lượt\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Sửa dịch vụ",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test(\"Đã đổi giá\", () => { const body = pm.response.json(); pm.expect(body.unitPrice === 100000, \"body.unitPrice === 100000\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/amenities/{{amenityId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"{{amenityName}}\", \"unitPrice\": 100000, \"unit\": \"lượt\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Thêm dịch vụ tạm để xóa",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('tempAmenityName', 'Dịch vụ tạm ' + Date.now());"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                  "if (pm.response.code < 300) { const body = pm.response.json(); pm.collectionVariables.set('tempAmenityId', body.id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/amenities",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"{{tempAmenityName}}\", \"unitPrice\": 5000, \"unit\": \"món\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Xóa dịch vụ chưa dùng",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/amenities/{{tempAmenityId}}"
+          }
+        },
+        {
+          "name": "Xóa dịch vụ không tồn tại → 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 404', () => pm.response.to.have.status(404));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/amenities/{{tempAmenityId}}"
+          }
+        }
+      ]
     }
   ]
 }
