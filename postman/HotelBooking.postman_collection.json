@@ -591,6 +591,44 @@
           }
         },
         {
+          "name": "Số phòng quá dài (> 10 ký tự) → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/rooms",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomNumber\": \"Phòng VIP 01\",\n  \"type\": \"SUITE\",\n  \"pricePerNight\": 2000000,\n  \"capacity\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
           "name": "Danh sách phòng trang 1",
           "event": [
             {
@@ -1158,6 +1196,44 @@
             "body": {
               "mode": "raw",
               "raw": "{\n  \"phone\": \"0999999999\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "CCCD quá dài (> 20 ký tự) → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/customers",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Test dài\",\n  \"phone\": \"0988888888\",\n  \"idCard\": \"0123456789012345678901\"\n}",
               "options": {
                 "raw": {
                   "language": "json"

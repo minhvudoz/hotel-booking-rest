@@ -20,6 +20,7 @@ export default folder('2. Phòng', [
     body: { roomNumber: 'Z998', type: 'VIP', pricePerNight: 0, capacity: 2 }, tests: [error(400)],
   }),
   req('JSON sai cú pháp → 400', 'POST', '/rooms', { body: '{"roomNumber": ', tests: [error(400)] }),
+  req('Số phòng quá dài (> 10 ký tự) → 400', 'POST', '/rooms', { body: { roomNumber: 'Phòng VIP 01', type: 'SUITE', pricePerNight: 2000000, capacity: 2 }, tests: [error(400)] }),
   req('Danh sách phòng trang 1', 'GET', '/rooms?page=1&size=5', {
     auth: 'letan',
     tests: [status(200), check('Đúng cấu trúc trang', 'Array.isArray(body.items) && body.items.length === 5 && body.page === 1 && body.size === 5 && body.total >= 13')],

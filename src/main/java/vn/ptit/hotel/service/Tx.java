@@ -31,6 +31,9 @@ public final class Tx {
     }
 
     private static RuntimeException translate(SQLException e) {
+        if ("22001".equals(e.getSQLState())) {
+            return ApiException.badRequest("Dữ liệu nhập vào dài hơn giới hạn cho phép (ví dụ số phòng tối đa 10 ký tự, CCCD tối đa 20 ký tự)");
+        }
         if ("23505".equals(e.getSQLState())) {
             return ApiException.conflict("Dữ liệu bị trùng với bản ghi đã có");
         }

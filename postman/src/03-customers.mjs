@@ -13,6 +13,7 @@ export default folder('3. Khách hàng', [
   }),
   req('Số điện thoại sai → 400', 'POST', '/customers', { auth: 'letan', body: { fullName: 'Test', phone: '12345' }, tests: [error(400)] }),
   req('Thiếu họ tên → 400', 'POST', '/customers', { auth: 'letan', body: { phone: '0999999999' }, tests: [error(400)] }),
+  req('CCCD quá dài (> 20 ký tự) → 400', 'POST', '/customers', { auth: 'letan', body: { fullName: 'Test dài', phone: '0988888888', idCard: '0123456789012345678901' }, tests: [error(400)] }),
   req('Tìm theo số điện thoại', 'GET', '/customers?q={{customerPhone}}', {
     auth: 'letan', tests: [status(200), check('Tìm đúng 1 khách', `body.total === 1 && body.items[0].id == ${v('customerId')}`)],
   }),
