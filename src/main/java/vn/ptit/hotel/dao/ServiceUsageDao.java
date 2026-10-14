@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import vn.ptit.hotel.config.Env;
 import vn.ptit.hotel.model.ServiceUsage;
 
 public final class ServiceUsageDao {
@@ -31,8 +32,8 @@ public final class ServiceUsageDao {
     }
 
     public static int insert(Connection c, int bookingId, int amenityId, int quantity, long unitPrice) throws SQLException {
-        return Jdbc.insert(c, "INSERT INTO booking_services (booking_id, amenity_id, quantity, unit_price) VALUES (?, ?, ?, ?)",
-                bookingId, amenityId, quantity, unitPrice);
+        return Jdbc.insert(c, "INSERT INTO booking_services (booking_id, amenity_id, quantity, unit_price, used_at) VALUES (?, ?, ?, ?, ?)",
+                bookingId, amenityId, quantity, unitPrice, Env.now());
     }
 
     public static void delete(Connection c, int id) throws SQLException {

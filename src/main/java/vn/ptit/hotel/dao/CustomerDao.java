@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import vn.ptit.hotel.config.Env;
 import vn.ptit.hotel.model.Customer;
 import vn.ptit.hotel.model.Paging;
 
@@ -46,8 +47,8 @@ public final class CustomerDao {
     }
 
     public static int insert(Connection c, Customer cu) throws SQLException {
-        return Jdbc.insert(c, "INSERT INTO customers (full_name, phone, id_card, email) VALUES (?, ?, ?, ?)",
-                cu.fullName(), cu.phone(), cu.idCard(), cu.email());
+        return Jdbc.insert(c, "INSERT INTO customers (full_name, phone, id_card, email, created_at) VALUES (?, ?, ?, ?, ?)",
+                cu.fullName(), cu.phone(), cu.idCard(), cu.email(), Env.now());
     }
 
     public static void update(Connection c, int id, Customer cu) throws SQLException {

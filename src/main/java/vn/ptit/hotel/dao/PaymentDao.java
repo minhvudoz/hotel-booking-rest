@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import vn.ptit.hotel.config.Env;
 import vn.ptit.hotel.model.Payment;
 
 public final class PaymentDao {
@@ -18,6 +19,6 @@ public final class PaymentDao {
     }
 
     public static void insert(Connection c, int bookingId, long amount, String method) throws SQLException {
-        Jdbc.insert(c, "INSERT INTO payments (booking_id, amount, method) VALUES (?, ?, ?)", bookingId, amount, method);
+        Jdbc.insert(c, "INSERT INTO payments (booking_id, amount, method, paid_at) VALUES (?, ?, ?, ?)", bookingId, amount, method, Env.now());
     }
 }

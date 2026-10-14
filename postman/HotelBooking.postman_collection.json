@@ -2378,7 +2378,8 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
-                  "pm.test(\"Đã thanh toán đủ, trạng thái CHECKED_OUT\", () => { const body = pm.response.json(); pm.expect(body.total === 1200000 && body.payment.amount === 1200000 && body.payment.method === 'TRANSFER' && body.booking.status === 'CHECKED_OUT', \"body.total === 1200000 && body.payment.amount === 1200000 && body.payment.method === 'TRANSFER' && body.booking.status === 'CHECKED_OUT'\").to.be.true; });"
+                  "pm.test(\"Đã thanh toán đủ, trạng thái CHECKED_OUT\", () => { const body = pm.response.json(); pm.expect(body.total === 1200000 && body.payment.amount === 1200000 && body.payment.method === 'TRANSFER' && body.booking.status === 'CHECKED_OUT', \"body.total === 1200000 && body.payment.amount === 1200000 && body.payment.method === 'TRANSFER' && body.booking.status === 'CHECKED_OUT'\").to.be.true; });",
+                  "pm.test(\"Giờ thanh toán là giờ Việt Nam (lệch < 5 phút so với hiện tại)\", () => { const body = pm.response.json(); pm.expect(Math.abs(new Date(body.payment.paidAt + '+07:00') - Date.now()) < 5 * 60e3, \"Math.abs(new Date(body.payment.paidAt + '+07:00') - Date.now()) < 5 * 60e3\").to.be.true; });"
                 ]
               }
             }

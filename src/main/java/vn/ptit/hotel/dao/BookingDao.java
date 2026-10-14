@@ -9,6 +9,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import vn.ptit.hotel.config.Env;
 import vn.ptit.hotel.model.Booking;
 import vn.ptit.hotel.model.Paging;
 
@@ -84,8 +85,8 @@ public final class BookingDao {
 
     public static int insert(Connection c, int roomId, int customerId, LocalDate checkIn, LocalDate checkOut,
                              long roomTotal, String createdBy) throws SQLException {
-        return Jdbc.insert(c, "INSERT INTO bookings (room_id, customer_id, check_in, check_out, status, room_total, created_by)"
-                + " VALUES (?, ?, ?, ?, 'BOOKED', ?, ?)", roomId, customerId, checkIn, checkOut, roomTotal, createdBy);
+        return Jdbc.insert(c, "INSERT INTO bookings (room_id, customer_id, check_in, check_out, status, room_total, created_by, created_at)"
+                + " VALUES (?, ?, ?, ?, 'BOOKED', ?, ?, ?)", roomId, customerId, checkIn, checkOut, roomTotal, createdBy, Env.now());
     }
 
     public static void updateStatus(Connection c, int id, String status) throws SQLException {

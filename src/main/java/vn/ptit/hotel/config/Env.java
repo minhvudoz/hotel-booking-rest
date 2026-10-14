@@ -1,6 +1,7 @@
 package vn.ptit.hotel.config;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 public final class Env {
@@ -19,5 +20,10 @@ public final class Env {
 
     public static LocalDate today() {
         return LocalDate.now(ZONE);
+    }
+
+    // Không dùng now() của CSDL: pooler (vd. Neon) bỏ qua TimeZone của phiên nên now() có thể là giờ UTC
+    public static LocalDateTime now() {
+        return LocalDateTime.now(ZONE).withNano(0);
     }
 }

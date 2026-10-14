@@ -47,7 +47,8 @@ export default folder('5. Đặt phòng', [
   req('Trả phòng và thanh toán chuyển khoản', 'PUT', '/bookings/{{bookingId}}/check-out', {
     auth: 'letan', body: { paymentMethod: 'TRANSFER' },
     tests: [status(200), check('Đã thanh toán đủ, trạng thái CHECKED_OUT',
-      "body.total === 1200000 && body.payment.amount === 1200000 && body.payment.method === 'TRANSFER' && body.booking.status === 'CHECKED_OUT'")],
+      "body.total === 1200000 && body.payment.amount === 1200000 && body.payment.method === 'TRANSFER' && body.booking.status === 'CHECKED_OUT'"),
+      check('Giờ thanh toán là giờ Việt Nam (lệch < 5 phút so với hiện tại)', "Math.abs(new Date(body.payment.paidAt + '+07:00') - Date.now()) < 5 * 60e3")],
   }),
   req('Hủy đơn đã trả phòng → 409', 'PUT', '/bookings/{{bookingId}}/cancel', { auth: 'letan', tests: [error(409)] }),
   req('Thêm dịch vụ sau khi trả phòng → 409', 'POST', '/bookings/{{bookingId}}/services', {
