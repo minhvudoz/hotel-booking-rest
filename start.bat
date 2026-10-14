@@ -3,6 +3,7 @@ chcp 65001 >nul
 cd /d "%~dp0"
 title Quan ly Khach san
 
+if not exist docker-compose.yml goto notextracted
 where docker >nul 2>nul
 if errorlevel 1 goto nodocker
 docker info >nul 2>nul
@@ -29,6 +30,12 @@ start "" http://localhost:8080
 timeout /t 15 >nul
 exit /b 0
 
+:notextracted
+echo Không tìm thấy file docker-compose.yml.
+echo Hãy giải nén toàn bộ file ZIP ra một thư mục, rồi bấm đúp start.bat trong thư mục đó.
+pause
+exit /b 1
+
 :nodocker
 echo Máy chưa cài Docker Desktop.
 echo Trình duyệt sẽ mở trang tải. Cài xong, mở Docker Desktop rồi bấm đúp lại file start.bat
@@ -42,7 +49,7 @@ pause
 exit /b 1
 
 :failed
-echo Khởi động thất bại. Có thể cổng 8080 đang bị chương trình khác dùng.
+echo Khởi động thất bại, xem thông báo lỗi phía trên. Thường gặp nhất: cổng 8080 đang bị chương trình khác dùng.
 echo Hãy chụp màn hình cửa sổ này gửi cho người hỗ trợ.
 pause
 exit /b 1
