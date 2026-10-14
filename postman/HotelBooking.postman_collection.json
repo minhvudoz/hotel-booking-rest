@@ -2597,6 +2597,161 @@
           }
         }
       ]
+    },
+    {
+      "name": "6. Thống kê",
+      "item": [
+        {
+          "name": "Tổng quan hôm nay (admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test(\"Số liệu hợp lệ\", () => { const body = pm.response.json(); pm.expect(body.totalRooms >= 13 && body.available >= 0 && body.available <= body.totalRooms && body.occupied >= 0, \"body.totalRooms >= 13 && body.available >= 0 && body.available <= body.totalRooms && body.occupied >= 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/stats/overview"
+          }
+        },
+        {
+          "name": "Lễ tân xem thống kê → 403",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 403', () => pm.response.to.have.status(403));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/stats/overview"
+          }
+        },
+        {
+          "name": "Doanh thu 12 tháng năm nay",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test(\"Đủ 12 tháng, tháng này có khoản 1.200.000 vừa thu\", () => { const body = pm.response.json(); pm.expect(body.length === 12 && body.every((m, i) => m.month === i + 1) && body.find(m => m.month === new Date(Date.now() + 7 * 3600e3).getUTCMonth() + 1).revenue >= 1200000, \"body.length === 12 && body.every((m, i) => m.month === i + 1) && body.find(m => m.month === new Date(Date.now() + 7 * 3600e3).getUTCMonth() + 1).revenue >= 1200000\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/stats/revenue"
+          }
+        },
+        {
+          "name": "Năm không hợp lệ → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/stats/revenue?year=1800"
+          }
+        },
+        {
+          "name": "Công suất phòng 30 ngày gần nhất",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test(\"30 ngày, tỷ lệ 0–100%\", () => { const body = pm.response.json(); pm.expect(body.length === 30 && body.every(d => d.rate >= 0 && d.rate <= 100), \"body.length === 30 && body.every(d => d.rate >= 0 && d.rate <= 100)\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/stats/occupancy"
+          }
+        },
+        {
+          "name": "Khoảng ngày ngược → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/stats/occupancy?from={{tomorrow}}&to={{today}}"
+          }
+        }
+      ]
     }
   ]
 }
