@@ -2,9 +2,18 @@ import { h } from './ui.js';
 import { session } from './api.js';
 import { loginPage } from './pages/login.js';
 import { dashboardPage } from './pages/dashboard.js';
+import { roomsBoardPage } from './pages/rooms-board.js';
+import { bookingsPage } from './pages/bookings.js';
+import { customersPage } from './pages/customers.js';
+import { adminPage } from './pages/admin.js';
 
+const ALL = ['ADMIN', 'RECEPTIONIST'];
 const ROUTES = [
   { path: '#/dashboard', label: '📊 Tổng quan', page: dashboardPage, roles: ['ADMIN'] },
+  { path: '#/rooms', label: '🛏️ Sơ đồ phòng', page: roomsBoardPage, roles: ALL },
+  { path: '#/bookings', label: '📋 Đặt phòng', page: bookingsPage, roles: ALL },
+  { path: '#/customers', label: '👥 Khách hàng', page: customersPage, roles: ALL },
+  { path: '#/admin', label: '⚙️ Quản trị', page: adminPage, roles: ['ADMIN'] },
 ];
 
 const home = user => ROUTES.find(r => r.roles.includes(user.role)).path;
