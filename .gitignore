@@ -1,0 +1,10 @@
+target/
+node_modules/
+nbproject/private/
+nb-configuration.xml
+.idea/
+*.iml
+.DS_Store
+# Spec/plan nội bộ và workspace thực thi, không đưa lên repo public
+docs/superpowers/
+.superpowers/
