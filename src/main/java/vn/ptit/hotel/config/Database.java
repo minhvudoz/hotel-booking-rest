@@ -35,11 +35,12 @@ public final class Database {
         cfg.setMaximumPoolSize(5);
         String renderUrl = System.getenv("DATABASE_URL");
         if (renderUrl != null && !renderUrl.isBlank()) {
-            // Render cấp dạng postgresql://user:pass@host[:port]/db
+            // Dạng postgresql://user:pass@host[:port]/db[?sslmode=require...] (Render, Neon); giữ lại query vì Neon bắt buộc SSL
             URI uri = URI.create(renderUrl);
             String[] credentials = uri.getUserInfo().split(":", 2);
             int port = uri.getPort() == -1 ? 5432 : uri.getPort();
-            cfg.setJdbcUrl("jdbc:postgresql://" + uri.getHost() + ":" + port + uri.getPath());
+            String query = uri.getRawQuery() == null ? "" : "?" + uri.getRawQuery();
+            cfg.setJdbcUrl("jdbc:postgresql://" + uri.getHost() + ":" + port + uri.getPath() + query);
             cfg.setUsername(credentials[0]);
             cfg.setPassword(credentials.length > 1 ? credentials[1] : "");
         } else {

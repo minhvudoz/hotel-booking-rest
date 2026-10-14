@@ -1,3 +1,5 @@
+# App chạy trên Render (free), CSDL dùng Neon Postgres (free, không hết hạn).
+# Khi tạo Blueprint, Render sẽ hỏi DATABASE_URL: dán connection string lấy từ Neon.
 services:
   - type: web
     name: hotel-booking-rest
@@ -7,17 +9,8 @@ services:
     healthCheckPath: /api/health
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
-          name: hotel-db
-          property: connectionString
+        sync: false
       - key: JWT_SECRET
         generateValue: true
       - key: PORT
         value: "8080"
-
-databases:
-  - name: hotel-db
-    plan: free
-    region: singapore
-    databaseName: hotel
-    user: hotel

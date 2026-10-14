@@ -17,6 +17,16 @@ Dịch vụ web RESTful quản lý đặt phòng khách sạn, xây dựng bằn
 
 **Tài khoản dùng thử:** `admin / admin123` (quản trị viên) · `letan / letan123` (lễ tân)
 
+## Đưa lên mạng miễn phí (Render + Neon)
+
+Tạo một link công khai để ai cũng mở được, không tốn tiền, không cần thẻ:
+
+1. **Neon** (CSDL): đăng nhập [neon.tech](https://neon.tech) bằng GitHub → **Create project** (region **AWS Asia Pacific (Singapore)**) → bấm **Connect** → copy chuỗi kết nối dạng `postgresql://...neon.tech/neondb?sslmode=require...`
+2. **Render** (app): đăng nhập [render.com](https://render.com) bằng GitHub → **New → Blueprint** → chọn repo này → ô `DATABASE_URL` dán chuỗi vừa copy → **Apply**
+3. Đợi khoảng 5–10 phút để build xong, rồi mở link `https://hotel-booking-rest-xxxx.onrender.com`. Lần đầu ứng dụng tự tạo bảng và dữ liệu mẫu.
+
+Gói free của Render cho app "ngủ" sau 15 phút không ai truy cập, lần mở sau mất khoảng 30–60 giây để thức dậy.
+
 ## Chức năng
 
 - Sơ đồ phòng theo ngày, tìm phòng trống, đặt phòng (chặn trùng lịch, kể cả khi hai người đặt cùng lúc)
