@@ -11,7 +11,7 @@ Dịch vụ web RESTful quản lý đặt phòng khách sạn, xây dựng bằn
 | ☁️ GitHub Codespaces | Tài khoản GitHub | [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/quzkhanh/hotel-booking-rest), đợi 3–5 phút, tab ứng dụng tự mở (nếu trang báo lỗi thì đợi thêm 1 phút rồi tải lại) |
 | 💻 Máy Windows | Docker Desktop | **Giải nén** file ZIP, bấm đúp `start.bat`, trình duyệt tự mở `http://localhost:8080`. Tắt bằng `stop.bat` |
 | 🍎 Máy Mac / Linux | Docker Desktop | **Giải nén** file ZIP, bấm đúp `start.command` (Mac) hoặc chạy `./start.sh`. Tắt bằng `stop.command`. Lần đầu trên Mac nếu bị chặn: chuột phải vào file → **Open**, hoặc vào System Settings → Privacy & Security → **Open Anyway** |
-| 🌐 Link online | Không cần gì | Mở link Render (nếu có). Lần đầu mở có thể mất ~1 phút để "đánh thức" |
+| 🌐 Link online | Không cần gì | **https://hotel-booking-rest.onrender.com** (tài liệu API: [/docs](https://hotel-booking-rest.onrender.com/docs/)). Nếu lâu không ai mở, lần đầu mất khoảng 30–60 giây để "đánh thức" |
 
 **Làm mới dữ liệu mẫu** (nên làm trước khi demo nếu đã chạy từ nhiều ngày trước): bấm đúp `reset.bat` (Windows) hoặc `reset.command` (Mac). Thao tác này xóa dữ liệu đã nhập và tạo lại dữ liệu mẫu theo ngày hôm nay.
 
