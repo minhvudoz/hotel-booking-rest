@@ -1,0 +1,80 @@
+{
+  "info": {
+    "name": "Hotel Booking REST API",
+    "description": "Kiểm thử dịch vụ web RESTful quản lý đặt phòng khách sạn. Chạy toàn bộ collection theo thứ tự từ trên xuống.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const vnDay = n => new Date(Date.now() + 7 * 3600e3 + n * 864e5).toISOString().slice(0, 10);",
+          "[['yesterday', -1], ['today', 0], ['tomorrow', 1], ['future1', 30], ['future2', 32]].forEach(([k, n]) => pm.collectionVariables.set(k, vnDay(n)));"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "adminToken",
+      "value": ""
+    },
+    {
+      "key": "letanToken",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "0. Hệ thống",
+      "item": [
+        {
+          "name": "Health check",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test(\"App và CSDL đang chạy\", () => { const body = pm.response.json(); pm.expect(body.status === 'UP' && body.database === 'UP', \"body.status === 'UP' && body.database === 'UP'\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/health"
+          }
+        },
+        {
+          "name": "Đường dẫn không tồn tại trả lỗi JSON",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 404', () => pm.response.to.have.status(404));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/khong-ton-tai"
+          }
+        }
+      ]
+    }
+  ]
+}

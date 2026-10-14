@@ -1,0 +1,7 @@
+target/
+.git/
+docs/
+postman/
+scripts/
+.devcontainer/
+.github/
