@@ -1,6 +1,6 @@
 # 🏨 Hotel Booking REST API
 
-![API tests](https://github.com/quzkhanh/hotel-booking-rest/actions/workflows/ci.yml/badge.svg)
+![API tests](https://github.com/minhvudoz/hotel-booking-rest/actions/workflows/ci.yml/badge.svg)
 
 Dịch vụ web RESTful quản lý đặt phòng khách sạn, xây dựng bằng **JAX-RS (Jersey 2)** trên **Tomcat 9**, CSDL **PostgreSQL**, có giao diện web tiếng Việt, xác thực **JWT**, tài liệu **Swagger** và bộ kiểm thử **Postman**.
 
@@ -8,7 +8,7 @@ Dịch vụ web RESTful quản lý đặt phòng khách sạn, xây dựng bằn
 
 | Cách | Cần gì | Làm thế nào |
 |---|---|---|
-| ☁️ GitHub Codespaces | Tài khoản GitHub | [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/quzkhanh/hotel-booking-rest), đợi 3–5 phút, tab ứng dụng tự mở (nếu trang báo lỗi thì đợi thêm 1 phút rồi tải lại) |
+| ☁️ GitHub Codespaces | Tài khoản GitHub | [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/minhvudoz/hotel-booking-rest), đợi 3–5 phút, tab ứng dụng tự mở (nếu trang báo lỗi thì đợi thêm 1 phút rồi tải lại) |
 | 💻 Máy Windows | Docker Desktop | **Giải nén** file ZIP, bấm đúp `start.bat`, trình duyệt tự mở `http://localhost:8080`. Tắt bằng `stop.bat` |
 | 🍎 Máy Mac / Linux | Docker Desktop | **Giải nén** file ZIP, bấm đúp `start.command` (Mac) hoặc chạy `./start.sh`. Tắt bằng `stop.command`. Lần đầu trên Mac nếu bị chặn: chuột phải vào file → **Open**, hoặc vào System Settings → Privacy & Security → **Open Anyway** |
 | 🌐 Link online | Không cần gì | **https://hotel-booking-rest.onrender.com** (tài liệu API: [/docs](https://hotel-booking-rest.onrender.com/docs/)). Nếu lâu không ai mở, lần đầu mất khoảng 30–60 giây để "đánh thức" |
