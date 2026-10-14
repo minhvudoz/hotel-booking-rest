@@ -1,6 +1,6 @@
 {
   "name": "Hotel Booking REST",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "image": "mcr.microsoft.com/devcontainers/base:2-ubuntu-24.04",
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },
