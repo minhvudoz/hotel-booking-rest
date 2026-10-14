@@ -2,6 +2,7 @@ package vn.ptit.hotel.resource;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -13,10 +14,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import vn.ptit.hotel.model.Booking;
 import vn.ptit.hotel.model.Customer;
 import vn.ptit.hotel.model.Page;
 import vn.ptit.hotel.model.Paging;
 import vn.ptit.hotel.security.Secured;
+import vn.ptit.hotel.service.BookingService;
 import vn.ptit.hotel.service.CustomerService;
 
 @Path("/customers")
@@ -39,6 +42,13 @@ public class CustomerResource {
     @Operation(summary = "Chi tiết khách hàng")
     public Customer get(@PathParam("id") int id) {
         return CustomerService.get(id);
+    }
+
+    @GET
+    @Path("/{id: \\d+}/bookings")
+    @Operation(summary = "Lịch sử lưu trú của khách")
+    public List<Booking> bookings(@PathParam("id") int id) {
+        return BookingService.listByCustomer(id);
     }
 
     @POST

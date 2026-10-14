@@ -1571,6 +1571,1032 @@
           }
         }
       ]
+    },
+    {
+      "name": "5. Đặt phòng",
+      "item": [
+        {
+          "name": "Ngày trả trước ngày nhận → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"roomId\": {{roomId}}, \"customerId\": {{customerId}}, \"checkIn\": \"{{tomorrow}}\", \"checkOut\": \"{{today}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Ngày nhận ở quá khứ → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"roomId\": {{roomId}}, \"customerId\": {{customerId}}, \"checkIn\": \"{{yesterday}}\", \"checkOut\": \"{{tomorrow}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Ngày sai định dạng trong body → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"roomId\": {{roomId}}, \"customerId\": {{customerId}}, \"checkIn\": \"2026-13-45\", \"checkOut\": \"{{tomorrow}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Thiếu thông tin → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"roomId\": {{roomId}}}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Phòng không tồn tại → 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 404', () => pm.response.to.have.status(404));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"roomId\": 999999, \"customerId\": {{customerId}}, \"checkIn\": \"{{today}}\", \"checkOut\": \"{{tomorrow}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Đặt phòng hôm nay → ngày mai",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                  "pm.test(\"Đơn mới: BOOKED, 1 đêm, 1.000.000đ, do lễ tân tạo\", () => { const body = pm.response.json(); pm.expect(body.status === 'BOOKED' && body.nights === 1 && body.roomTotal === 1000000 && body.createdBy === 'letan', \"body.status === 'BOOKED' && body.nights === 1 && body.roomTotal === 1000000 && body.createdBy === 'letan'\").to.be.true; });",
+                  "if (pm.response.code < 300) { const body = pm.response.json(); pm.collectionVariables.set('bookingId', body.id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"roomId\": {{roomId}}, \"customerId\": {{customerId}}, \"checkIn\": \"{{today}}\", \"checkOut\": \"{{tomorrow}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Đặt trùng lịch → 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409', () => pm.response.to.have.status(409));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });",
+                  "pm.test(\"Thông điệp nêu rõ trùng lịch\", () => { const body = pm.response.json(); pm.expect(body.error.includes('đã có khách đặt'), \"body.error.includes('đã có khách đặt')\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"roomId\": {{roomId}}, \"customerId\": {{customerId}}, \"checkIn\": \"{{today}}\", \"checkOut\": \"{{tomorrow}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Thêm dịch vụ khi chưa nhận phòng → 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409', () => pm.response.to.have.status(409));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings/{{bookingId}}/services",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"amenityId\": {{amenityId}}, \"quantity\": 1}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Trả phòng khi chưa nhận phòng → 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409', () => pm.response.to.have.status(409));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings/{{bookingId}}/check-out",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paymentMethod\": \"CASH\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Nhận phòng",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test(\"Đang ở\", () => { const body = pm.response.json(); pm.expect(body.status === 'CHECKED_IN', \"body.status === 'CHECKED_IN'\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings/{{bookingId}}/check-in"
+          }
+        },
+        {
+          "name": "Nhận phòng lần 2 → 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409', () => pm.response.to.have.status(409));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings/{{bookingId}}/check-in"
+          }
+        },
+        {
+          "name": "Ghi dịch vụ phát sinh",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                  "pm.test(\"Thành tiền = 2 × 100.000\", () => { const body = pm.response.json(); pm.expect(body.amount === 200000 && body.unitPrice === 100000, \"body.amount === 200000 && body.unitPrice === 100000\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings/{{bookingId}}/services",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"amenityId\": {{amenityId}}, \"quantity\": 2}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Số lượng 0 → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings/{{bookingId}}/services",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"amenityId\": {{amenityId}}, \"quantity\": 0}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Ghi nhầm thêm 1 dịch vụ",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                  "if (pm.response.code < 300) { const body = pm.response.json(); pm.collectionVariables.set('wrongUsageId', body.id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings/{{bookingId}}/services",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"amenityId\": 1, \"quantity\": 1}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Xóa dịch vụ ghi nhầm",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings/{{bookingId}}/services/{{wrongUsageId}}"
+          }
+        },
+        {
+          "name": "Dịch vụ đã dùng của đơn",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test(\"Còn đúng 1 dịch vụ\", () => { const body = pm.response.json(); pm.expect(body.length === 1 && body[0].amenityId == pm.collectionVariables.get('amenityId'), \"body.length === 1 && body[0].amenityId == pm.collectionVariables.get('amenityId')\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings/{{bookingId}}/services"
+          }
+        },
+        {
+          "name": "Xem trước hóa đơn",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tổng 1.200.000, chưa thanh toán\", () => { const body = pm.response.json(); pm.expect(body.total === 1200000 && body.servicesTotal === 200000 && body.payment === null, \"body.total === 1200000 && body.servicesTotal === 200000 && body.payment === null\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings/{{bookingId}}/invoice"
+          }
+        },
+        {
+          "name": "Hình thức thanh toán sai → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings/{{bookingId}}/check-out",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paymentMethod\": \"BITCOIN\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Trả phòng và thanh toán chuyển khoản",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test(\"Đã thanh toán đủ, trạng thái CHECKED_OUT\", () => { const body = pm.response.json(); pm.expect(body.total === 1200000 && body.payment.amount === 1200000 && body.payment.method === 'TRANSFER' && body.booking.status === 'CHECKED_OUT', \"body.total === 1200000 && body.payment.amount === 1200000 && body.payment.method === 'TRANSFER' && body.booking.status === 'CHECKED_OUT'\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings/{{bookingId}}/check-out",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paymentMethod\": \"TRANSFER\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Hủy đơn đã trả phòng → 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409', () => pm.response.to.have.status(409));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings/{{bookingId}}/cancel"
+          }
+        },
+        {
+          "name": "Thêm dịch vụ sau khi trả phòng → 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409', () => pm.response.to.have.status(409));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings/{{bookingId}}/services",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"amenityId\": {{amenityId}}, \"quantity\": 1}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Đặt phòng tương lai",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                  "if (pm.response.code < 300) { const body = pm.response.json(); pm.collectionVariables.set('futureBookingId', body.id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"roomId\": {{roomId}}, \"customerId\": {{customerId}}, \"checkIn\": \"{{future1}}\", \"checkOut\": \"{{future2}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Nhận phòng trước ngày → 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409', () => pm.response.to.have.status(409));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings/{{futureBookingId}}/check-in"
+          }
+        },
+        {
+          "name": "Hủy đơn tương lai",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test(\"Đã hủy\", () => { const body = pm.response.json(); pm.expect(body.status === 'CANCELLED', \"body.status === 'CANCELLED'\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings/{{futureBookingId}}/cancel"
+          }
+        },
+        {
+          "name": "Đặt lại khoảng ngày vừa hủy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201', () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"roomId\": {{roomId}}, \"customerId\": {{customerId}}, \"checkIn\": \"{{future1}}\", \"checkOut\": \"{{future2}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Lọc đơn đã hủy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test(\"Toàn bộ là CANCELLED\", () => { const body = pm.response.json(); pm.expect(body.items.length > 0 && body.items.every(b => b.status === 'CANCELLED'), \"body.items.length > 0 && body.items.every(b => b.status === 'CANCELLED')\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings?status=CANCELLED&size=100"
+          }
+        },
+        {
+          "name": "Tìm đơn theo SĐT khách",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test(\"Có 3 đơn của khách test\", () => { const body = pm.response.json(); pm.expect(body.total === 3, \"body.total === 3\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings?q={{customerPhone}}"
+          }
+        },
+        {
+          "name": "Trạng thái đơn không hợp lệ → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings?status=DONE"
+          }
+        },
+        {
+          "name": "Lịch sử lưu trú của khách",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test(\"3 lượt\", () => { const body = pm.response.json(); pm.expect(body.length === 3, \"body.length === 3\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/customers/{{customerId}}/bookings"
+          }
+        },
+        {
+          "name": "Xóa phòng đã có đơn → 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409', () => pm.response.to.have.status(409));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/rooms/{{roomId}}"
+          }
+        },
+        {
+          "name": "Xóa dịch vụ đã được dùng → 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409', () => pm.response.to.have.status(409));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/amenities/{{amenityId}}"
+          }
+        },
+        {
+          "name": "Đơn không tồn tại → 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 404', () => pm.response.to.have.status(404));",
+                  "pm.test(\"Có thông điệp lỗi\", () => { const body = pm.response.json(); pm.expect(typeof body.error === 'string' && body.error.length > 0, \"typeof body.error === 'string' && body.error.length > 0\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{letanToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/bookings/999999"
+          }
+        }
+      ]
     }
   ]
 }
