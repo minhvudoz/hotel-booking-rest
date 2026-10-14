@@ -3,7 +3,7 @@
 # KEEP=1 ./scripts/dev-test.sh để giữ lại stack sau khi chạy (debug).
 set -euo pipefail
 cd "$(dirname "$0")/.."
-export APP_PORT=18080 APP_TZ=UTC
+export APP_PORT=18080 APP_TZ=UTC DB_PORT=15432
 PROJECT=hotel-test
 cleanup() { docker compose -p "$PROJECT" down -v --remove-orphans >/dev/null 2>&1 || true; }
 cleanup

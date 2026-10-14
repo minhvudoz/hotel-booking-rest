@@ -1,0 +1,52 @@
+# 🏨 Hotel Booking REST API
+
+![API tests](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)
+
+Dịch vụ web RESTful quản lý đặt phòng khách sạn, xây dựng bằng **JAX-RS (Jersey 2)** trên **Tomcat 9**, CSDL **PostgreSQL**, có giao diện web tiếng Việt, xác thực **JWT**, tài liệu **Swagger** và bộ kiểm thử **Postman**.
+
+## Chạy thử nhanh nhất
+
+| Cách | Cần gì | Làm thế nào |
+|---|---|---|
+| ☁️ GitHub Codespaces | Tài khoản GitHub | [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/OWNER/REPO), đợi 3–5 phút, tab ứng dụng tự mở (nếu trang báo lỗi thì đợi thêm 1 phút rồi tải lại) |
+| 💻 Máy Windows | Docker Desktop | Bấm đúp `start.bat`, trình duyệt tự mở `http://localhost:8080`. Tắt bằng `stop.bat` |
+| 🍎 Máy Mac / Linux | Docker Desktop | Bấm đúp `start.command` (Mac) hoặc chạy `./start.sh`. Tắt bằng `stop.command` |
+| 🌐 Link online | Không cần gì | Mở link Render (nếu có). Lần đầu mở có thể mất ~1 phút để "đánh thức" |
+
+**Tài khoản dùng thử:** `admin / admin123` (quản trị viên) · `letan / letan123` (lễ tân)
+
+## Chức năng
+
+- Sơ đồ phòng theo ngày, tìm phòng trống, đặt phòng (chặn trùng lịch, kể cả khi hai người đặt cùng lúc)
+- Nhận phòng, ghi dịch vụ phát sinh, trả phòng kèm hóa đơn và thanh toán, in hóa đơn
+- Quản lý khách hàng và lịch sử lưu trú
+- Quản trị phòng và danh mục dịch vụ (chỉ admin)
+- Dashboard: doanh thu 12 tháng, công suất phòng, số liệu trong ngày (chỉ admin)
+- Tài liệu API tương tác tại `/docs`
+
+## API
+
+Tiền tố `/api`, xác thực bằng header `Authorization: Bearer <token>` (lấy từ `POST /api/auth/login`). Xem đầy đủ tại `/docs`.
+
+| Nhóm | Endpoint chính |
+|---|---|
+| Xác thực | `POST /auth/login`, `GET /auth/me` |
+| Phòng | `GET/POST /rooms`, `GET/PUT/DELETE /rooms/{id}`, `GET /rooms/available`, `GET /rooms/status` |
+| Khách hàng | `GET/POST /customers`, `GET/PUT /customers/{id}`, `GET /customers/{id}/bookings` |
+| Dịch vụ | `GET/POST /amenities`, `PUT/DELETE /amenities/{id}` |
+| Đặt phòng | `GET/POST /bookings`, `GET /bookings/{id}`, `PUT /bookings/{id}/cancel`, `/check-in`, `/check-out`, `GET/POST /bookings/{id}/services`, `DELETE /bookings/{id}/services/{sid}`, `GET /bookings/{id}/invoice` |
+| Thống kê | `GET /stats/overview`, `/stats/revenue`, `/stats/occupancy` |
+
+## Kiểm thử bằng Postman
+
+1. `node postman/build.mjs` để sinh `postman/HotelBooking.postman_collection.json`
+2. Postman → Import → chọn file trên → chạy cả collection (Run collection), biến `baseUrl` mặc định là `http://localhost:8080`
+3. Hoặc chạy tự động toàn bộ trên một stack tạm: `./scripts/dev-test.sh`
+
+## Mở bằng NetBeans
+
+File → Open Project → chọn thư mục này (NetBeans nhận dạng dự án Maven). Bật CSDL bằng `docker compose up -d db` (Postgres tại `jdbc:postgresql://localhost:55432/hotel`, user `hotel`, mật khẩu xem trong `docker-compose.yml`). Thêm server Apache Tomcat 9, khai báo biến môi trường `DB_URL`, `DB_USER`, `DB_PASSWORD`, `JWT_SECRET` cho Tomcat, rồi bấm Run.
+
+## Công nghệ
+
+Java 17 · Maven · Tomcat 9 · Jersey 2.48 (JAX-RS) · Jackson · PostgreSQL 16 · HikariCP · java-jwt · jBCrypt · swagger-jaxrs2 + Swagger UI · Chart.js · Docker Compose · Postman/Newman · GitHub Actions
