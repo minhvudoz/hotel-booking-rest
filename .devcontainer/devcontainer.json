@@ -4,7 +4,7 @@
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },
-  "postStartCommand": "docker compose up -d --build",
+  "postStartCommand": "bash -c 'for i in $(seq 1 60); do docker info >/dev/null 2>&1 && break; sleep 2; done; docker compose up -d --build'",
   "forwardPorts": [8080],
   "portsAttributes": {
     "8080": { "label": "Ứng dụng Khách sạn", "onAutoForward": "openBrowser" }
