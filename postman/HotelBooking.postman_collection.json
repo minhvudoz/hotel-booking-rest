@@ -35,6 +35,45 @@
       "name": "0. Hệ thống",
       "item": [
         {
+          "name": "Trang Swagger UI",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Là trang HTML Swagger', () => pm.expect(pm.response.text()).to.include('swagger-ui'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/docs/"
+          }
+        },
+        {
+          "name": "Thư viện Swagger UI được đóng gói sẵn",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/webjars/swagger-ui/5.32.15/swagger-ui-bundle.js"
+          }
+        },
+        {
           "name": "Health check",
           "event": [
             {
@@ -72,6 +111,26 @@
             "method": "GET",
             "header": [],
             "url": "{{baseUrl}}/api/khong-ton-tai"
+          }
+        },
+        {
+          "name": "Đặc tả OpenAPI",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test(\"Có đủ các nhóm API chính\", () => { const body = pm.response.json(); pm.expect(['/api/rooms', '/api/customers', '/api/amenities', '/api/bookings', '/api/stats/overview', '/api/auth/login'].every(p => Object.keys(body.paths).includes(p)), \"['/api/rooms', '/api/customers', '/api/amenities', '/api/bookings', '/api/stats/overview', '/api/auth/login'].every(p => Object.keys(body.paths).includes(p))\").to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/openapi.json"
           }
         }
       ]

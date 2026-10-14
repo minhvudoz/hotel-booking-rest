@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
-import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -25,7 +24,6 @@ import vn.ptit.hotel.config.Database;
 @OpenAPIDefinition(
         info = @Info(title = "Hotel Booking REST API", version = "1.0",
                 description = "Dịch vụ web RESTful quản lý đặt phòng khách sạn, xây dựng bằng JAX-RS (Jersey) trên Tomcat"),
-        servers = @Server(url = "/api"),
         security = @SecurityRequirement(name = "bearerAuth"))
 @SecurityScheme(name = "bearerAuth", type = SecuritySchemeType.HTTP, scheme = "bearer", bearerFormat = "JWT")
 public class HealthResource {
