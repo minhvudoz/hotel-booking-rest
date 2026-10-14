@@ -8,6 +8,11 @@ export function openBookingForm(room, checkIn, checkOut, onDone) {
   const fresh = { fullName: h('input'), idCard: h('input'), email: h('input', { type: 'email' }) };
   let customer = null;
   let looked = false;
+  phone.addEventListener('input', () => {
+    customer = null;
+    looked = false;
+    info.replaceChildren();
+  });
 
   const lookup = guard(async () => {
     const found = await api('GET', '/customers' + qs({ q: phone.value.trim(), size: 20 }));
