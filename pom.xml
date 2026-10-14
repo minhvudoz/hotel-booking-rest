@@ -89,6 +89,11 @@
             <artifactId>swagger-ui</artifactId>
             <version>5.32.15</version>
         </dependency>
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>chart.js</artifactId>
+            <version>4.5.1</version>
+        </dependency>
     </dependencies>
 
     <build>

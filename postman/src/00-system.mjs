@@ -11,6 +11,16 @@ export default folder('0. Hệ thống', [
     event: [{ listen: 'test', script: { type: 'text/javascript', exec: [status(200)] } }],
     request: { method: 'GET', header: [], url: '{{baseUrl}}/webjars/swagger-ui/5.32.15/swagger-ui-bundle.js' },
   },
+  {
+    name: 'Trang giao diện web',
+    event: [{ listen: 'test', script: { type: 'text/javascript', exec: [status(200), "pm.test('Nạp ứng dụng JS', () => pm.expect(pm.response.text()).to.include('js/app.js'));"] } }],
+    request: { method: 'GET', header: [], url: '{{baseUrl}}/' },
+  },
+  {
+    name: 'Thư viện Chart.js được đóng gói sẵn',
+    event: [{ listen: 'test', script: { type: 'text/javascript', exec: [status(200)] } }],
+    request: { method: 'GET', header: [], url: '{{baseUrl}}/webjars/chart.js/4.5.1/dist/chart.umd.min.js' },
+  },
   req('Health check', 'GET', '/health', {
     auth: null,
     tests: [status(200), check('App và CSDL đang chạy', "body.status === 'UP' && body.database === 'UP'")],

@@ -74,6 +74,45 @@
           }
         },
         {
+          "name": "Trang giao diện web",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Nạp ứng dụng JS', () => pm.expect(pm.response.text()).to.include('js/app.js'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/"
+          }
+        },
+        {
+          "name": "Thư viện Chart.js được đóng gói sẵn",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/webjars/chart.js/4.5.1/dist/chart.umd.min.js"
+          }
+        },
+        {
           "name": "Health check",
           "event": [
             {

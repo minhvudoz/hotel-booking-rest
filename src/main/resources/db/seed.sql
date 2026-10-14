@@ -1,5 +1,5 @@
 INSERT INTO users (username, password_hash, full_name, role) VALUES
-    ('admin', '$2a$10$yn3MbORy43P8YImuQEglL.QNx1IdYVtIMmfknuObEElUr.hfy1UXW', 'Quản trị viên', 'ADMIN'),
+    ('admin', '$2a$10$yn3MbORy43P8YImuQEglL.QNx1IdYVtIMmfknuObEElUr.hfy1UXW', 'Quản lý khách sạn', 'ADMIN'),
     ('letan', '$2a$10$IekSZQ0fSCxrVVBWxcMbIOX1rmC4nPbbALHDSNMluRmXRpiASBq9O', 'Lễ tân ca sáng', 'RECEPTIONIST');
 
 INSERT INTO rooms (room_number, type, price_per_night, capacity, description) VALUES
